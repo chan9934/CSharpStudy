@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            int number = 25;
+
+            bool isPair = ((number % 2 == 0) ? true : false);
         }
     }
 }
