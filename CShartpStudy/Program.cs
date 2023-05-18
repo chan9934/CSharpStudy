@@ -1,17 +1,19 @@
-﻿namespace CShartpStudy
+﻿using System.Diagnostics;
+
+namespace CShartpStudy
 {
     internal class Program
     {
 
         static void Main(string[] args)
         {
-            for (int i = 0; i < 100; ++i)
+
+            for (int i = 2; i <= 9; ++i)
             {
-                if (i % 3 != 0)
+                for (int j = 1; j <= 9; ++j)
                 {
-                    continue;
+                    Console.WriteLine($"{i} * {j} = {i * j}");
                 }
-                Console.WriteLine($"무엇이냐면 {i}"); ;
             }
         }
     }
