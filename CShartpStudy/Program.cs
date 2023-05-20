@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace CShartpStudy
@@ -126,8 +127,59 @@ namespace CShartpStudy
                     break;
             }
         }
+        static void Fight(ref Monster monster, ref Player player)
+        {
+            while (true)
+            {
+                monster.m_Hp -= player.m_Attack;
+                if(monster.m_Hp <= 0)
+                {
+                    Console.WriteLine("승리했습니다!");
+                    Console.WriteLine($"남은 체력 {player.m_Hp}");
+                    break;
+                }
 
-        static void EnterGame()
+                player.m_Hp -= monster.m_Attack;
+                if(player.m_Hp <= 0)
+                {
+                    Console.WriteLine("패배했습니다!");
+                    break;
+                }
+            }
+
+        }
+        static void EnterField(ref Player player)
+        {
+            while (true)
+            {
+                Console.WriteLine("필드에 접속했습니다");
+                Monster monster;
+                CreateRandomMonster(out monster);
+                Console.WriteLine("[1] 전투 모드로 돌입!");
+                Console.WriteLine("[2] 일정 확률로 마을로 도망");
+                string input = Console.ReadLine();
+                if (input == "1")
+                {
+                    Fight(ref monster, ref player);
+                }
+                else if (input == "2")
+                {
+                    Random random = new Random();
+                    int randValue = random.Next(0, 101);
+                    if(randValue <= 33)
+                    {
+                        Console.WriteLine("도망치는데 성공했습니다!");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("도망치는데 실패했습니다!");
+                        Fight(ref monster, ref player);
+                    }
+                }
+            }
+        }
+        static void EnterGame(ref Player player)
         {
             while (true)
             {
@@ -138,10 +190,7 @@ namespace CShartpStudy
                 string input = Console.ReadLine();
                 if (input == "1")
                 {
-                    Monster monster;
-                    CreateRandomMonster(out monster);
-                    Console.WriteLine("[1] 전투 모드로 돌입!");
-                    Console.WriteLine("[2] 일정 확률로 마을로 도망");
+                    EnterField(ref player);
                 }
 
                 else if (input == "2") { break; }
@@ -167,7 +216,7 @@ namespace CShartpStudy
 
                     Console.WriteLine($"HP : {player.m_Hp}, Attack : {player.m_Attack}");
 
-                    EnterGame();
+                    EnterGame(ref player);
 
                 }
 
