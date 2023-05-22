@@ -10,24 +10,12 @@ namespace CShartpStudy
 
         static void Main(string[] args)
         {
-            string name = "Harry Porter";
+            Game game = new Game();
 
-            bool bIsContained = name.Contains("Harry");
-            if(bIsContained)
+            while (true)
             {
-                Console.WriteLine("OK");
+                game.Process();
             }
-            int index = name.IndexOf(" ");
-            Console.WriteLine(index);
-
-            name = name + "Junior";
-            Console.WriteLine(name.ToLower());
-            Console.WriteLine(name.ToUpper());
-            Console.WriteLine(name.Replace('r', 'l'));
-
-            string[] sname = name.Split(new char[] {' '});
-            string substringname = name.Substring(5);
-
         }
     }
 }

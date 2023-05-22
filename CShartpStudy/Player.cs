@@ -13,30 +13,19 @@ namespace CShartpStudy
         Archer,
         Mage
     }
-    class Player
+    class Player : Creature
     {
 
-        public int hp = 0;
-        public int attack = 0;
         public PlayerType type = PlayerType.None;
 
-        protected Player(PlayerType type)
+        protected Player(PlayerType type) : base(CreatureType.Player)
         {
             this.type = type;
         }
 
-        public void SetInfo(int hp, int attack)
+        public PlayerType GetPlayerType()
         {
-            this.hp = hp;
-            this.attack = attack;
-        }
-        public int GetHp()
-        {
-            return hp;
-        }
-        public int GetAttack()
-        {
-            return attack;
+            return type;
         }
 
     }
