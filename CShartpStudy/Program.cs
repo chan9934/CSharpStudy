@@ -1,30 +1,33 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace CShartpStudy
 {
-    class Knight
-    {
-        public int hp;
-        public int attack;
-        public Knight()
-        {
-            hp = 100;
-            attack = 10;
-            Console.WriteLine("Knight() 호출");
-        }
-        public Knight(int hp) : this()
-        {
-            this.hp = hp;
-            Console.WriteLine("Knight(int, int) 호출");
-        }
-    }
     internal class Program
     {
+
         static void Main(string[] args)
         {
-            Knight knight = new Knight(500);
+            string name = "Harry Porter";
+
+            bool bIsContained = name.Contains("Harry");
+            if(bIsContained)
+            {
+                Console.WriteLine("OK");
+            }
+            int index = name.IndexOf(" ");
+            Console.WriteLine(index);
+
+            name = name + "Junior";
+            Console.WriteLine(name.ToLower());
+            Console.WriteLine(name.ToUpper());
+            Console.WriteLine(name.Replace('r', 'l'));
+
+            string[] sname = name.Split(new char[] {' '});
+            string substringname = name.Substring(5);
+
         }
     }
 }
