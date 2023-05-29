@@ -8,20 +8,17 @@ namespace CShartpStudy
 {
     internal class Program
     {
-        
-        class Knight
+        static public void Test2()
         {
-
-            public int HP
-            {
-                get;
-                set;
-            } = 200;
+            Console.WriteLine("a");
         }
         static void Main(string[] args)
         {
-            Knight knight = new Knight();
-            Console.WriteLine(knight.HP);
+            InputManager inputmanager = new InputManager();
+            while(true)
+            {
+                inputmanager.Update(Test2);
+            }
         }
     }
 }
