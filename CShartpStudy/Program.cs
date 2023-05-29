@@ -15,9 +15,10 @@ namespace CShartpStudy
         static void Main(string[] args)
         {
             InputManager inputmanager = new InputManager();
+            inputmanager.InputKey += Test2;
             while(true)
             {
-                inputmanager.Update(Test2);
+                inputmanager.Update();
             }
         }
     }
