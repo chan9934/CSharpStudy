@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class PrefabTest : MonoBehaviour
 {
-    GameObject tank;
     void Start()
     {
-        tank = Managers.resource.Instantiate("Prefabs/Tank");
-        Destroy(tank, 3.0f);
+        GameObject Tank = Manager.Resource.Instantiate("Tank");
+        Destroy(Tank, 3.0f);
     }
 
 }

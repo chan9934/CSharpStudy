@@ -9,30 +9,28 @@ public class InputManager
     public Action<Define.MouseEvent> MouseAction = null;
 
     bool _pressed = false;
-
     public void OnUpdate()
     {
-
-        if(Input.anyKey && KeyAction != null)
+        if (Input.anyKey != false && KeyAction != null)
         {
             KeyAction.Invoke();
         }
-        if(MouseAction != null)
+
+        if (MouseAction != null)
         {
-            if(Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
             {
                 MouseAction.Invoke(Define.MouseEvent.Press);
                 _pressed = true;
             }
             else
             {
-                if(_pressed)
+                if (_pressed)
                 {
                     MouseAction.Invoke(Define.MouseEvent.Click);
                     _pressed = false;
                 }
             }
         }
-        
     }
 }
