@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public PlayerState _state = PlayerState.Idle;
     [SerializeField]
     float speed = 10.0f;
-    Animator anim;
+   
     Vector3 _desPos;
 
     void UpdateDie()
@@ -23,10 +23,6 @@ public class PlayerController : MonoBehaviour
     }
     void UpdateMoving()
     {
-        _wait_run = Mathf.Lerp(_wait_run, 1, 10.0f * Time.deltaTime);
-        anim.SetFloat("wait_run", _wait_run);
-        anim.Play("WAIT_RUN");
-
         Vector3 dir = _desPos - transform.position;
 
         if (dir.magnitude < 0.0001f)
@@ -39,17 +35,17 @@ public class PlayerController : MonoBehaviour
             transform.position = transform.position + dir.normalized * moveDist;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 10 * Time.deltaTime);
         }
+
+        Animator anim = GetComponent<Animator>();
+        anim.SetFloat("speed", speed);
     }
     void UpdateIdle()
     {
-
-        _wait_run = Mathf.Lerp(_wait_run, 0, 10.0f * Time.deltaTime);
-        anim.SetFloat("wait_run", _wait_run);
-        anim.Play("WAIT_RUN");
+        Animator anim = GetComponent<Animator>();
+        anim.SetFloat("speed", 0);
     }
     void Start()
     {
-        anim = GetComponent<Animator>();
         Manager.Input.MouseAction -= OnMouseClicked;
         Manager.Input.MouseAction += OnMouseClicked;
     }
