@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
         Manager.Input.MouseAction -= OnMouseClicked;
         Manager.Input.MouseAction += OnMouseClicked;
     }
-    float _wait_run = 0;
     void Update()
     {
         switch (_state)
