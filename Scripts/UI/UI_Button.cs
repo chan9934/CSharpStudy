@@ -1,46 +1,58 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Button : MonoBehaviour
 {
-    Dictionary<Type, UnityEngine.Object[]> dicObject = null;
-    enum Buttons
+    Dictionary<Type, UnityEngine.Object[]> objects = new Dictionary<Type, UnityEngine.Object[]>();
+
+    int _score = 0;
+
+    public enum Buttons
     {
         PointButton
     }
-    enum Texts
+    public enum Texts
     {
         PointText,
         ScoreText
     }
 
-    private void Start()
+    public void Start()
     {
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
+        Get<Text>((int)Texts.ScoreText).text = "test";
     }
 
     void Bind<T>(Type type) where T : UnityEngine.Object
     {
         string[] names = Enum.GetNames(type);
-        UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
-        dicObject.Add(type, objects);   
-        for(int i = 0; i < names.Length;++i)
+        UnityEngine.Object[] _object = new UnityEngine.Object[names.Length];
+        objects.Add(typeof(T), _object);
+        for(int i = 0; i < names.Length; ++i)
         {
-            objects[i] = null;
+
+            _object[i] = Util.FindChild<T>(gameObject, names[i], true);
+  
         }
 
     }
-
-
-    int _score = 0;
-    public void OnButtonClicked()
+    T Get<T> (int idx) where T : UnityEngine.Object
+    {
+        UnityEngine.Object[] _objects = null;
+        if(objects.TryGetValue(typeof(T), out _objects) == false)
+        {
+            return null;
+        }
+        return _objects[idx] as T;
+    }
+    public void OnButtonClick()
     {
             ++_score;
-        
     }
 }
