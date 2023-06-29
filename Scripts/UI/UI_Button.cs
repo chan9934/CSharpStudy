@@ -1,87 +1,56 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Button : MonoBehaviour
+public class UI_Button : UI_Popup
 {
-    Dictionary<Type, UnityEngine.Object[]> objects = new Dictionary<Type, UnityEngine.Object[]>();
-
-    int _score = 0;
-
-    public enum Buttons
+    
+    enum Buttons
     {
         PointButton
     }
-    public enum Texts
+    enum Texts
     {
         PointText,
         ScoreText
     }
-
-    public enum GameObjects
+    enum GameObjects
     {
-        TestObject
+        TextObject
     }
-
-    public void Start()
+    enum Images
     {
+        ItemIcon
+    }
+    private void Start()
+    {
+        Init();
+    }
+    public override void Init()
+    {
+        base.Init();
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
-        
-        GetText((int)Texts.ScoreText).text = "test";
+        //GetText((int)(Texts.ScoreText)).text = "test";
+        Bind<Image>(typeof(Images));
+        GameObject go = GetImage((int)Images.ItemIcon).gameObject;
+        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
+        GetButton((int)(Buttons.PointButton)).gameObject.BindEvent(OnButtonClicked);
     }
 
-    void Bind<T>(Type type) where T : UnityEngine.Object
+  
+    int _score = 0;
+    public void OnButtonClicked(PointerEventData data)
     {
-        string[] names = Enum.GetNames(type);
-        UnityEngine.Object[] _object = new UnityEngine.Object[names.Length];
-        objects.Add(typeof(T), _object);
-        for(int i = 0; i < names.Length; ++i)
-        {
-            if (typeof(T) == typeof(GameObject))
-            {
-                _object[i] = Util.FindChild(gameObject, names[i], true);
-            }
-            else
-            {
-                _object[i] = Util.FindChild<T>(gameObject, names[i], true);
-            }
-            if (_object[i] == null)
-            {
-                Debug.Log($"Faile{names[i]}");
-            }
-        }
-
-    }
-    Text GetText(int idx)
-    {
-        return Get<Text>(idx);
-    }
-    Image GetImage(int idx)
-    {
-        return Get<Image>(idx);
-    }
-    Button GetButton(int idx)
-    {
-        return Get<Button>(idx);
-    }
-
-    T Get<T> (int idx) where T : UnityEngine.Object
-    {
-        UnityEngine.Object[] _objects = null;
-        if(objects.TryGetValue(typeof(T), out _objects) == false)
-        {
-            return null;
-        }
-        return _objects[idx] as T;
-    }
-    public void OnButtonClick()
-    {
+        Debug.Log("asdf");
             ++_score;
+        GetText((int)Texts.ScoreText).text = $"Á¡¼ö {_score}";
+
+
     }
 }

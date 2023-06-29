@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputManager
 {
@@ -9,11 +10,16 @@ public class InputManager
     public Action<Define.MouseEvent> MouseAction = null;
 
     bool _pressed = false;
-
     public void OnUpdate()
     {
-        if (Input.anyKey && KeyAction != null)
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+        if (Input.anyKey != false && KeyAction != null)
+        {
             KeyAction.Invoke();
+        }
 
         if (MouseAction != null)
         {
@@ -25,8 +31,10 @@ public class InputManager
             else
             {
                 if (_pressed)
+                {
                     MouseAction.Invoke(Define.MouseEvent.Click);
-                _pressed = false;
+                    _pressed = false;
+                }
             }
         }
     }

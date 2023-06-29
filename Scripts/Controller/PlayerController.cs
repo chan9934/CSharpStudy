@@ -48,8 +48,12 @@ public class PlayerController : MonoBehaviour
     {
         Manager.Input.MouseAction -= OnMouseClicked;
         Manager.Input.MouseAction += OnMouseClicked;
-        Manager.Resource.Instantiate("UI/UI_Button");
-    }
+        //Manager.Resource.Instantiate("UI/UI_Button");
+       
+            Manager.UI.ShowScenepUI<UI_Inven>();
+
+        //Manager.UI.ClosePopupUI();
+    }   
     void Update()
     {
         switch (_state)
@@ -81,7 +85,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100.0f, mask))
         {
             Debug.DrawRay(Camera.main.transform.position, ray.direction * (hit.point - Camera.main.transform.position).magnitude, Color.green, 1.0f);
-            Debug.Log($"{hit.collider.gameObject.name}");
+          //  Debug.Log($"{hit.collider.gameObject.name}");
 
             _state = PlayerState.Moving;
             _desPos = hit.point;
