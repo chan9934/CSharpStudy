@@ -1,56 +1,52 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Button : UI_Popup
+public class UI_Button : UI_Base
 {
-    
-    enum Buttons
+
+    public enum Buttons
     {
         PointButton
     }
-    enum Texts
+    public enum Texts
     {
         PointText,
         ScoreText
     }
-    enum GameObjects
+
+    public enum GameObjects
     {
-        TextObject
+        TestObject
     }
-    enum Images
+    public enum Images
     {
         ItemIcon
     }
+
+
+    int _score = 0;
     private void Start()
     {
-        Init();
-    }
-    public override void Init()
-    {
-        base.Init();
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
-        //GetText((int)(Texts.ScoreText)).text = "test";
         Bind<Image>(typeof(Images));
+
         GameObject go = GetImage((int)Images.ItemIcon).gameObject;
-        BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
-        GetButton((int)(Buttons.PointButton)).gameObject.BindEvent(OnButtonClicked);
+        AddUIEvent(go, (PointerEventData eventData) => { go.transform.position = eventData.position; }, Define.UIEvent.Drag);
+        GetButton((int)Buttons.PointButton).gameObject.AddUIEvent(OnButtonClick);
+
     }
 
-  
-    int _score = 0;
-    public void OnButtonClicked(PointerEventData data)
+    public void OnButtonClick(PointerEventData eventData)
     {
-        Debug.Log("asdf");
             ++_score;
-        GetText((int)Texts.ScoreText).text = $"점수 {_score}";
-
-
+        GetText((int)Texts.ScoreText).text = $"점수 : {_score}";
     }
 }

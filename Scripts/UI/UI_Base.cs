@@ -1,54 +1,41 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UI_Button;
 
-public abstract class UI_Base : MonoBehaviour
+public class UI_Base : MonoBehaviour
 {
 
-    public abstract void Init();
+    Dictionary<Type, UnityEngine.Object[]> objects = new Dictionary<Type, UnityEngine.Object[]>();
+   
 
-    Dictionary<Type, UnityEngine.Object[]> dicObject = new Dictionary<Type, UnityEngine.Object[]>();
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
         string[] names = Enum.GetNames(type);
-        UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
-        dicObject.Add(typeof(T), objects);
+        UnityEngine.Object[] _object = new UnityEngine.Object[names.Length];
+        objects.Add(typeof(T), _object);
         for (int i = 0; i < names.Length; ++i)
         {
             if (typeof(T) == typeof(GameObject))
             {
-                objects[i] = Utill.FindChild(gameObject, names[i], true);
+                _object[i] = Util.FindChild(gameObject, names[i], true);
             }
             else
             {
-                objects[i] = Utill.FindChild<T>(gameObject, names[i], true);
+                _object[i] = Util.FindChild<T>(gameObject, names[i], true);
             }
-            if (objects[i] == null)
+            if (_object[i] == null)
             {
-                Debug.Log($"Fail {names[i]}");
+                Debug.Log($"Faile{names[i]}");
             }
         }
 
     }
-
-    public T Get<T>(int idx) where T : UnityEngine.Object
-    {
-        UnityEngine.Object[] _objects = null;
-        if (dicObject.TryGetValue(typeof(T), out _objects))
-        {
-            return _objects[idx] as T;
-        }
-        return null;
-    }
-
-    protected GameObject GetGameObject(int idx)
-    {
-        return Get<GameObject>(idx);    
-    }
-    protected Text GetText(int idx)
+   protected Text GetText(int idx)
     {
         return Get<Text>(idx);
     }
@@ -56,24 +43,35 @@ public abstract class UI_Base : MonoBehaviour
     {
         return Get<Image>(idx);
     }
-    protected Button GetButton(int idx)
+    protected  Button GetButton(int idx)
     {
         return Get<Button>(idx);
     }
 
-    public static void BindEvent(GameObject go, Action<PointerEventData>action, Define.UIEvent type = Define.UIEvent.Click)
+    T Get<T>(int idx) where T : UnityEngine.Object
     {
-        UI_EventHandler evt = Utill.GetOrAddComponent < UI_EventHandler > (go);
+        UnityEngine.Object[] _objects = null;
+        if (objects.TryGetValue(typeof(T), out _objects) == false)
+        {
+            return null;
+        }
+        return _objects[idx] as T;
+    }
+    public static void AddUIEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    {
+        UI_Event_Handler handler = Util.GetOrAddComponent<UI_Event_Handler>(go);
+
         switch(type)
         {
-            case Define.UIEvent.Drag:
-                evt.OnDragHandler -= action;
-                evt.OnDragHandler += action;
-                break;
             case Define.UIEvent.Click:
-                evt.OnClickHandler -= action;
-                evt.OnClickHandler += action;
+                handler.OnClickHandler -= action;
+                handler.OnClickHandler += action;
                 break;
+            case Define.UIEvent.Drag:
+                handler.OnDragHandler -= action;
+                handler.OnDragHandler += action;
+                break;
+
         }
     }
 }
