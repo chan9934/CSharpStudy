@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UI_Button;
 
-public class UI_Base : MonoBehaviour
+public abstract class UI_Base : MonoBehaviour
 {
 
     Dictionary<Type, UnityEngine.Object[]> objects = new Dictionary<Type, UnityEngine.Object[]>();
@@ -35,6 +35,7 @@ public class UI_Base : MonoBehaviour
         }
 
     }
+    public abstract void Init();
    protected Text GetText(int idx)
     {
         return Get<Text>(idx);
@@ -47,8 +48,12 @@ public class UI_Base : MonoBehaviour
     {
         return Get<Button>(idx);
     }
+    protected GameObject GetGameObject(int idx)
+    {
+        return Get<GameObject>(idx);
+    }
 
-    T Get<T>(int idx) where T : UnityEngine.Object
+    protected T Get<T>(int idx) where T : UnityEngine.Object
     {
         UnityEngine.Object[] _objects = null;
         if (objects.TryGetValue(typeof(T), out _objects) == false)
@@ -57,7 +62,7 @@ public class UI_Base : MonoBehaviour
         }
         return _objects[idx] as T;
     }
-    public static void AddUIEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
         UI_Event_Handler handler = Util.GetOrAddComponent<UI_Event_Handler>(go);
 

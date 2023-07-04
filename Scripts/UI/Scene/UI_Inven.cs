@@ -6,7 +6,7 @@ public class UI_Inven : UI_Scene
 {
     enum GameObjects
     {
-        GridPanel
+        GridPannel
     }
     void Start()
     {
@@ -15,19 +15,19 @@ public class UI_Inven : UI_Scene
 
     public override void Init()
     {
-        base.Init();
         Bind<GameObject>(typeof(GameObjects));
-        GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
-        foreach(Transform child in gridPanel.transform)
+        GameObject gridPannel = GetGameObject((int)(GameObjects.GridPannel));
+        foreach(Transform children in gridPannel.transform)
         {
-            Manager.Resource.Destroy(child.gameObject);
+            Managers.Resource.Destroy(children.gameObject);
         }
-
         for(int i = 0; i < 8; ++i)
         {
-            GameObject item = Manager.UI.MakeSubItem<UI_Inven_Item>(gridPanel.transform).gameObject;
-            UI_Inven_Item invenItem = item.GetOrAddComponent < UI_Inven_Item>();
+            GameObject item = Managers.UI.MakeSubItem<UI_Inven_Item>(gridPannel.transform).gameObject;
+            
+            UI_Inven_Item invenItem = item.GetOrAddComponent<UI_Inven_Item>();
             invenItem.SetInfo($"¹«±â {i}¹ø");
+            
         }
     }
 }
