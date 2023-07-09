@@ -5,21 +5,20 @@ using UnityEngine.EventSystems;
 
 public abstract class BaseScene : MonoBehaviour
 {
-    public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
-    void Awake()
-    {
-        Init();
-    }
+    public Define.Scene SceneType { get; protected set; } = Define.Scene.UnKnown;
 
+    
     protected virtual void Init()
     {
         Object obj = GameObject.FindObjectOfType(typeof(EventSystem));
         if(obj == null)
         {
-            Manager.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
+            Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
         }
     }
-
+    
     public abstract void Clear();
+
+
 
 }

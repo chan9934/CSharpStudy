@@ -6,10 +6,9 @@ public class GameScene : BaseScene
 {
     public override void Clear()
     {
-        
     }
 
-    void Start()
+    void Awake()
     {
         Init();
     }
@@ -17,7 +16,10 @@ public class GameScene : BaseScene
     protected override void Init()
     {
         base.Init();
-            
-        Manager.UI.ShowScenepUI<UI_Inven>();
+
+        SceneType = Define.Scene.Game;
+        Managers.UI.ShowSceneUI<UI_Inven>();
+
     }
+
 }

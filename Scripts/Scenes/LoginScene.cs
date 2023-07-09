@@ -7,19 +7,26 @@ public class LoginScene : BaseScene
 {
     public override void Clear()
     {
-        Debug.Log("LoginScene Clear");
+        Debug.Log("LoginScene_Clear");
+    }
+
+    void Awake()
+    {
+        Init();
     }
 
     protected override void Init()
     {
         base.Init();
+
         SceneType = Define.Scene.Login;
+        
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Manager.Scene.LoadScene(Define.Scene.Game);
-        }
+        if(Input.GetKeyDown(KeyCode.Q)) { Managers.Scene.LoadScene(Define.Scene.Game); }
     }
+
+
 }
