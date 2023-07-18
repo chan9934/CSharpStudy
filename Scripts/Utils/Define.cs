@@ -6,16 +6,25 @@ public class Define
 {
     public enum Scene
     {
-        UnKnown,
+        Unknown,
         Login,
+        Lobby,
         Game,
-        Lobby
     }
+
+    public enum Sound
+    {
+        Bgm,
+        Effect,
+        MaxCount,
+    }
+
     public enum UIEvent
     {
         Click,
-        Drag
+        Drag,
     }
+
     public enum MouseEvent
     {
         Press,

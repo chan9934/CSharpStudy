@@ -1,58 +1,59 @@
-using System;
+Ôªøusing System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_Button : UI_Popup
 {
-
-    public enum Buttons
+    enum Buttons
     {
         PointButton
     }
-    public enum Texts
+
+    enum Texts
     {
         PointText,
-        ScoreText
+        ScoreText,
     }
 
-    public enum GameObjects
+    enum GameObjects
     {
-        TestObject
+        TestObject,
     }
-    public enum Images
+
+    enum Images
     {
-        ItemIcon
+        ItemIcon,
     }
 
-
-    int _score = 0;
     private void Start()
     {
         Init();
-
     }
+
     public override void Init()
     {
         base.Init();
-        Bind<Button>(typeof(Buttons));
-        Bind<Text>(typeof(Texts));
-        Bind<GameObject>(typeof(GameObjects));
-        Bind<Image>(typeof(Images));
 
-        GameObject go = GetImage((int)Images.ItemIcon).gameObject;
-        BindEvent(go, (PointerEventData eventData) => { go.transform.position = eventData.position; }, Define.UIEvent.Drag);
-        GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClick);
+		Bind<Button>(typeof(Buttons));
+		Bind<Text>(typeof(Texts));
+		Bind<GameObject>(typeof(GameObjects));
+		Bind<Image>(typeof(Images));
 
-    }
+		GetButton((int)Buttons.PointButton).gameObject.BindEvent(OnButtonClicked);
 
-    public void OnButtonClick(PointerEventData eventData)
+		GameObject go = GetImage((int)Images.ItemIcon).gameObject;
+		BindEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
+	}
+
+    int _score = 0;
+
+    public void OnButtonClicked(PointerEventData data)
     {
-            ++_score;
-        GetText((int)Texts.ScoreText).text = $"¡°ºˆ : {_score}";
+        _score++;
+        GetText((int)Texts.ScoreText).text = $"Ï†êÏàò : {_score}";
     }
+
 }

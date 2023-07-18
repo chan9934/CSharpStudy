@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +6,9 @@ public class UI_Inven : UI_Scene
 {
     enum GameObjects
     {
-        GridPannel
+        GridPanel
     }
+
     void Start()
     {
         Init();
@@ -15,19 +16,20 @@ public class UI_Inven : UI_Scene
 
     public override void Init()
     {
+        base.Init();
+
         Bind<GameObject>(typeof(GameObjects));
-        GameObject gridPannel = GetGameObject((int)(GameObjects.GridPannel));
-        foreach(Transform children in gridPannel.transform)
+
+        GameObject gridPanel = Get<GameObject>((int)GameObjects.GridPanel);
+        foreach (Transform child in gridPanel.transform)
+            Managers.Resource.Destroy(child.gameObject);
+
+        // 실제 인벤토리 정보를 참고해서
+        for (int i = 0; i < 8; i++)
         {
-            Managers.Resource.Destroy(children.gameObject);
-        }
-        for(int i = 0; i < 8; ++i)
-        {
-            GameObject item = Managers.UI.MakeSubItem<UI_Inven_Item>(gridPannel.transform).gameObject;
-            
+            GameObject item = Managers.UI.MakeSubItem<UI_Inven_Item>(gridPanel.transform).gameObject;            
             UI_Inven_Item invenItem = item.GetOrAddComponent<UI_Inven_Item>();
-            invenItem.SetInfo($"���� {i}��");
-            
+            invenItem.SetInfo($"집행검{i}번");
         }
     }
 }
