@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,12 +23,13 @@ public class Stat : MonoBehaviour
     public int Attack { get { return _attack; } set { _attack = value; } }
     public int Defense { get { return _defense; } set { _defense = value; } }
     public float MoveSpeed { get { return _moveSpeed; } set { _moveSpeed = value; } }
-    void Start()
+
+    private void Start()
     {
         _level = 1;
         _hp = 100;
         _maxHp = 100;
-        _attack = 15;
+        _attack = 10;
         _defense = 5;
         _moveSpeed = 5.0f;
     }

@@ -2,10 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace Data
-{
-	#region Stat
 
+namespace Data
+{ 
+#region Stat
 	[Serializable]
 	public class Stat
 	{
@@ -27,6 +27,5 @@ namespace Data
 			return dict;
 		}
 	}
-
 	#endregion
 }
