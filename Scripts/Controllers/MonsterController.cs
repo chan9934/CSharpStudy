@@ -15,6 +15,7 @@ public class MonsterController : BaseController
     float _scanRange = 10;
     public override void Init()
     {
+        WorldObjectType = Define.WorldObject.Monster;
         _stat = gameObject.GetComponent<Stat>();
         if(gameObject.GetComponentInChildren<UI_HPBar>() == null )
         {
@@ -57,10 +58,12 @@ public class MonsterController : BaseController
     }
     protected override void UpdateIdle() 
     {
-        Debug.Log("Idle");
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
+        GameObject player = Managers.Game.Player;
+        if (player == null)
         {
+            return;
+        }
+        
             float distance = (player.transform.position - transform.position).magnitude;
 
             if(distance < _scanRange)
@@ -70,7 +73,6 @@ public class MonsterController : BaseController
                 State = Define.State.Moving;
                 return;
             }
-        }
 
     }
     protected override void UpdateSkill() 
@@ -88,12 +90,7 @@ public class MonsterController : BaseController
         if (_lockTarget != null)
         {
             Stat targetStat = _lockTarget.GetComponent<Stat>();
-            int damage = Mathf.Max(0, _stat.Attack - targetStat.Defense);
-            targetStat.Hp -= damage;
-            if(targetStat.Hp <= 0)
-            {
-                Managers.Resource.Destroy(targetStat.gameObject);
-            }
+            targetStat.OnAttacked(_stat);
             if(targetStat.Hp > 0)
             {
                 float distance = (_lockTarget.transform.position - transform.position).magnitude;

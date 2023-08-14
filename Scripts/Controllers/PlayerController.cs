@@ -14,6 +14,7 @@ public class PlayerController : BaseController
 
 	public override void Init()
     {
+		WorldObjectType = Define.WorldObject.Player;
 		_stat = gameObject.GetComponent<PlayerStat>();
 
 		Managers.Input.MouseAction -= OnMouseEvent;
@@ -44,15 +45,15 @@ public class PlayerController : BaseController
 
 		// 이동
 		Vector3 dir = _destPos - transform.position;
+		dir.y = 0;
 		if (dir.magnitude < 0.1f)
 		{
 			State = Define.State.Idle;
 		}
 		else
 		{
-			NavMeshAgent nma = gameObject.GetOrAddComponent<NavMeshAgent>();
-			float moveDist = Mathf.Clamp(_stat.MoveSpeed * Time.deltaTime, 0, dir.magnitude);
-			nma.Move(dir.normalized * moveDist);
+		
+			
 
 			Debug.DrawRay(transform.position + Vector3.up * 0.5f, dir.normalized, Color.green);
 			if (Physics.Raycast(transform.position + Vector3.up * 0.5f, dir, 1.0f, LayerMask.GetMask("Block")))
@@ -61,8 +62,9 @@ public class PlayerController : BaseController
 					State = Define.State.Idle;
 				return;
 			}
-
-			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+            float moveDist = Mathf.Clamp(_stat.MoveSpeed * Time.deltaTime, 0, dir.magnitude);
+			transform.position += dir.normalized * moveDist;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
 		}
 	}
 
@@ -85,9 +87,7 @@ public class PlayerController : BaseController
 		if(_lockTarget != null)
 		{
 			Stat targetStat = _lockTarget.GetComponent<Stat>();
-			PlayerStat myStat = gameObject.GetComponent<PlayerStat>();
-			int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
-			targetStat.Hp -= damage;
+			targetStat.OnAttacked(_stat);
 		}
 
 		// TODO
